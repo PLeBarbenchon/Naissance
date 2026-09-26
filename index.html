@@ -1,13 +1,6 @@
-<!doctype html>
-<html lang="fr">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-</head>
-<body>
-<title data-own>Liste de naissance</title>
-<link data-own rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Figtree:wght@400;500;600;700&display=swap">
-<style data-own>
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body><title data-own="">Liste de naissance</title>
+<link data-own="" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Figtree:wght@400;500;600;700&amp;display=swap">
+<style data-own="">
 :root{
   --bg:#EEF2F0; --surface:#FFFFFF; --surface-2:#F6F8F7; --ink:#1D2A2B; --muted:#5E6E6D;
   --line:#D8E0DD; --accent:#2F6F60; --accent-ink:#FFFFFF; --warm:#E9A77B; --warm-soft:#FBE7D8;
@@ -115,23 +108,9 @@ textarea{resize:vertical;min-height:70px}
 }
 @media (prefers-reduced-motion:reduce){.bar i{transition:none}}
 </style>
-
-<main data-own class="wrap" id="app"></main>
-
-<script data-own type="application/json" id="state">{"title":"Bébé","parents":"Pierre & Lisa","due":"mars 2027","message":"Nous préparons l'arrivée de notre petit bout. Plutôt que des objets en double, nous avons listé ce qui nous serait vraiment utile. Chacun peut participer du montant qu'il souhaite, même une petite part.","cagnotteUrl":"","example":true,"items":[
-{"id":"i1","name":"Poussette trio","cat":"Balade","desc":"Nacelle, siège auto et châssis tout-terrain.","price":690,"funded":420},
-{"id":"i2","name":"Lit cododo","cat":"Sommeil","desc":"Se fixe au lit des parents pour les premiers mois.","price":220,"funded":220},
-{"id":"i3","name":"Siège auto i-Size","cat":"Balade","desc":"Groupe 0+/1, pivotant, norme R129.","price":280,"funded":95},
-{"id":"i4","name":"Porte-bébé physiologique","cat":"Balade","desc":"Utilisable dès 3,5 kg, portage ventral et dos.","price":140,"funded":60},
-{"id":"i5","name":"Commode à langer","cat":"Toilette","desc":"Avec plan à langer amovible.","price":180,"funded":0},
-{"id":"i6","name":"Baignoire et transat de bain","cat":"Toilette","desc":"Baignoire pliable avec thermomètre intégré.","price":60,"funded":25},
-{"id":"i7","name":"Tire-lait électrique","cat":"Repas","desc":"Double pompage, silencieux.","price":160,"funded":0},
-{"id":"i8","name":"Écoute-bébé vidéo","cat":"Sommeil","desc":"Vision nocturne et mesure de la température.","price":120,"funded":40},
-{"id":"i9","name":"Tapis d'éveil","cat":"Éveil","desc":"Arches amovibles et jouets sensoriels.","price":75,"funded":75},
-{"id":"i10","name":"Premiers livres","cat":"Éveil","desc":"Livres en tissu et imagiers cartonnés.","price":40,"funded":10}
-]}</script>
-
-<script data-own>
+<main data-own="" class="wrap" id="app"></main>
+<script data-own type="application/json" id="state">{"title":"Bébé","parents":"Pierre & Lisa","due":"mars 2027","message":"Nous préparons l'arrivée de notre petit bout. Plutôt que des objets en double, nous avons listé ce qui nous serait vraiment utile. Chacun peut participer du montant qu'il souhaite, même une petite part.","cagnotteUrl":"https://www.onparticipe.fr/c/gU0hAHEA","example":false,"items":[{"id":"i1","name":"Poussette trio","cat":"Balade","desc":"Nacelle, siège auto et châssis tout-terrain.","price":690,"funded":420},{"id":"i2","name":"Lit cododo","cat":"Sommeil","desc":"Se fixe au lit des parents pour les premiers mois.","price":220,"funded":220},{"id":"i3","name":"Siège auto i-Size","cat":"Balade","desc":"Groupe 0+/1, pivotant, norme R129.","price":280,"funded":95},{"id":"i4","name":"Porte-bébé physiologique","cat":"Balade","desc":"Utilisable dès 3,5 kg, portage ventral et dos.","price":140,"funded":60},{"id":"i5","name":"Commode à langer","cat":"Toilette","desc":"Avec plan à langer amovible.","price":180,"funded":0},{"id":"i6","name":"Baignoire et transat de bain","cat":"Toilette","desc":"Baignoire pliable avec thermomètre intégré.","price":60,"funded":25},{"id":"i7","name":"Tire-lait électrique","cat":"Repas","desc":"Double pompage, silencieux.","price":160,"funded":0},{"id":"i8","name":"Écoute-bébé vidéo","cat":"Sommeil","desc":"Vision nocturne et mesure de la température.","price":120,"funded":40},{"id":"i9","name":"Tapis d'éveil","cat":"Éveil","desc":"Arches amovibles et jouets sensoriels.","price":75,"funded":75},{"id":"i10","name":"Premiers livres","cat":"Éveil","desc":"Livres en tissu et imagiers cartonnés.","price":40,"funded":10}]}</script>
+<script data-own="">
 (() => {
   // Capture the pristine page (before rendering) so the parents can republish it.
   const OWN = [...document.body.children].filter(n => n.hasAttribute('data-own'));
@@ -415,7 +394,4 @@ textarea{resize:vertical;min-height:70px}
     }).catch(()=>{});
   }
 })();
-</script>
-
-</body>
-</html>
+</script></body></html>
