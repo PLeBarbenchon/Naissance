@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+</head>
+<body>
+<title data-own>Liste de naissance</title>
+<link data-own rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Figtree:wght@400;500;600;700&display=swap">
+<style data-own>
+:root{
+  --bg:#EEF2F0; --surface:#FFFFFF; --surface-2:#F6F8F7; --ink:#1D2A2B; --muted:#5E6E6D;
+  --line:#D8E0DD; --accent:#2F6F60; --accent-ink:#FFFFFF; --warm:#E9A77B; --warm-soft:#FBE7D8;
+  --ok:#2F6F60; --shadow:0 1px 2px rgba(29,42,43,.06),0 8px 24px rgba(29,42,43,.06);
+  --serif:"Instrument Serif",Georgia,"Times New Roman",serif;
+  --sans:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#141C1C; --surface:#1C2626; --surface-2:#223030; --ink:#E8EFEC; --muted:#9DB0AC;
+    --line:#2E3D3C; --accent:#7CC3AE; --accent-ink:#0F1A18; --warm:#E9A77B; --warm-soft:#3A2B22;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#141C1C; --surface:#1C2626; --surface-2:#223030; --ink:#E8EFEC; --muted:#9DB0AC;
+  --line:#2E3D3C; --accent:#7CC3AE; --accent-ink:#0F1A18; --warm:#E9A77B; --warm-soft:#3A2B22;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 var(--sans);padding:0 16px}
+.wrap{max-width:1040px;margin:0 auto;padding-block:40px 64px;display:flex;flex-direction:column;gap:36px}
+h1,h2,h3{text-wrap:balance;margin:0}
+button,input,textarea,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.eyebrow{font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.num{font-variant-numeric:tabular-nums}
+
+/* Hero */
+.hero{display:grid;grid-template-columns:1.4fr 1fr;gap:28px;align-items:end}
+.hero h1{font:400 clamp(2.6rem,7vw,4.6rem)/1 var(--serif);letter-spacing:-.01em}
+.hero h1 em{color:var(--accent)}
+.hero p.msg{max-width:58ch;color:var(--muted);margin:14px 0 0}
+.facts{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:18px;font-size:.92rem}
+.facts span b{font-weight:600}
+.summary{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:20px;display:flex;flex-direction:column;gap:12px;box-shadow:var(--shadow)}
+.summary .big{font:400 2.2rem/1 var(--serif)}
+.bar{height:10px;border-radius:99px;background:var(--surface-2);border:1px solid var(--line);overflow:hidden}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--warm),var(--accent));border-radius:99px;transition:width .6s ease}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:99px;padding:11px 18px;font-weight:600;text-decoration:none;background:var(--accent);color:var(--accent-ink)}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn.small{padding:7px 13px;font-size:.88rem}
+.btn[aria-disabled="true"],.btn:disabled{opacity:.5;pointer-events:none}
+
+/* Steps */
+.how{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;counter-reset:s}
+.how div{padding:14px 16px;border-top:2px solid var(--line);font-size:.93rem;color:var(--muted)}
+.how div::before{counter-increment:s;content:counter(s);display:block;font:400 1.6rem/1 var(--serif);color:var(--ink);margin-bottom:6px}
+
+/* Filters */
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:99px;padding:6px 13px;font-size:.88rem}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+
+/* Items */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:12px}
+.card .top{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+.card h3{font:400 1.55rem/1.1 var(--serif)}
+.card .cat{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.card p{margin:0;color:var(--muted);font-size:.93rem}
+.price{font-weight:700;white-space:nowrap}
+.ticks{position:relative}
+.meta{display:flex;justify-content:space-between;font-size:.86rem;color:var(--muted)}
+.card .actions{margin-top:auto;display:flex;gap:8px;align-items:center;justify-content:space-between}
+.done{display:inline-flex;align-items:center;gap:6px;background:var(--warm-soft);color:var(--ink);border-radius:99px;padding:6px 12px;font-size:.86rem;font-weight:600}
+.card.is-done{opacity:.8}
+.card.is-done .bar i{background:var(--accent)}
+
+footer{color:var(--muted);font-size:.85rem;text-align:center}
+.linklike{background:none;border:0;color:var(--muted);text-decoration:underline;padding:0;font-size:.85rem}
+
+/* Modal */
+.overlay{position:fixed;inset:0;background:rgba(15,22,22,.45);display:flex;align-items:flex-end;justify-content:center;padding:16px;z-index:10}
+.sheet{background:var(--surface);color:var(--ink);border-radius:20px;width:100%;max-width:520px;max-height:calc(100% - 16px);overflow:auto;padding:22px;display:flex;flex-direction:column;gap:16px;box-shadow:var(--shadow)}
+@media (min-width:640px){.overlay{align-items:center}}
+.sheet h2{font:400 1.9rem/1.1 var(--serif)}
+.sheet .x{margin-left:auto;background:none;border:0;font-size:1.5rem;line-height:1;color:var(--muted)}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.amt{border:1px solid var(--line);background:var(--surface-2);border-radius:12px;padding:10px 14px;font-weight:600}
+.amt[aria-pressed="true"]{border-color:var(--accent);background:var(--accent);color:var(--accent-ink)}
+label{display:flex;flex-direction:column;gap:5px;font-size:.88rem;font-weight:600}
+input,textarea,select{border:1px solid var(--line);background:var(--surface-2);border-radius:10px;padding:10px 12px;font-weight:400;width:100%}
+textarea{resize:vertical;min-height:70px}
+.recap{background:var(--surface-2);border:1px dashed var(--line);border-radius:12px;padding:14px;font-size:.93rem;white-space:pre-wrap}
+.note{font-size:.85rem;color:var(--muted);margin:0}
+.err{color:#B4442E;font-size:.85rem;margin:0}
+
+/* Parent editor */
+.editor-item{border:1px solid var(--line);border-radius:12px;padding:12px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.editor-item .full{grid-column:1/-1}
+.editor-list{display:flex;flex-direction:column;gap:10px}
+.sheet.wide{max-width:720px}
+.sticky{position:sticky;bottom:-22px;background:var(--surface);padding-block:12px;display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;border-top:1px solid var(--line);margin:0 -22px -22px;padding-inline:22px}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:99px;font-size:.9rem;z-index:20}
+
+@media (max-width:760px){
+  .hero{grid-template-columns:1fr}
+  .how{grid-template-columns:1fr}
+  .editor-item{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){.bar i{transition:none}}
+</style>
+
+<main data-own class="wrap" id="app"></main>
+
+<script data-own type="application/json" id="state">{"title":"Bébé Martin","parents":"Camille & Julien","due":"décembre 2026","message":"Nous préparons l'arrivée de notre petit bout. Plutôt que des objets en double, nous avons listé ce qui nous serait vraiment utile. Chacun peut participer du montant qu'il souhaite, même une petite part.","cagnotteUrl":"","example":true,"items":[
+{"id":"i1","name":"Poussette trio","cat":"Balade","desc":"Nacelle, siège auto et châssis tout-terrain.","price":690,"funded":420},
+{"id":"i2","name":"Lit cododo","cat":"Sommeil","desc":"Se fixe au lit des parents pour les premiers mois.","price":220,"funded":220},
+{"id":"i3","name":"Siège auto i-Size","cat":"Balade","desc":"Groupe 0+/1, pivotant, norme R129.","price":280,"funded":95},
+{"id":"i4","name":"Porte-bébé physiologique","cat":"Balade","desc":"Utilisable dès 3,5 kg, portage ventral et dos.","price":140,"funded":60},
+{"id":"i5","name":"Commode à langer","cat":"Toilette","desc":"Avec plan à langer amovible.","price":180,"funded":0},
+{"id":"i6","name":"Baignoire et transat de bain","cat":"Toilette","desc":"Baignoire pliable avec thermomètre intégré.","price":60,"funded":25},
+{"id":"i7","name":"Tire-lait électrique","cat":"Repas","desc":"Double pompage, silencieux.","price":160,"funded":0},
+{"id":"i8","name":"Écoute-bébé vidéo","cat":"Sommeil","desc":"Vision nocturne et mesure de la température.","price":120,"funded":40},
+{"id":"i9","name":"Tapis d'éveil","cat":"Éveil","desc":"Arches amovibles et jouets sensoriels.","price":75,"funded":75},
+{"id":"i10","name":"Premiers livres","cat":"Éveil","desc":"Livres en tissu et imagiers cartonnés.","price":40,"funded":10}
+]}</script>
+
+<script data-own>
+(() => {
+  // Capture the pristine page (before rendering) so the parents can republish it.
+  const OWN = [...document.body.children].filter(n => n.hasAttribute('data-own'));
+  const PRISTINE = OWN.map(n => n.id === 'state' ? null : n.outerHTML);
+  const RESET = '';
+
+  let S = JSON.parse(document.getElementById('state').textContent);
+  let filter = 'Tout';
+  let canEdit = false;
+  let artifactApi = null;
+  const app = document.getElementById('app');
+
+  const eur = n => new Intl.NumberFormat('fr-FR', {style:'currency',currency:'EUR',maximumFractionDigits: n % 1 ? 2 : 0}).format(n);
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const clamp = (v,a,b) => Math.max(a, Math.min(b, v));
+  const pct = it => it.price > 0 ? clamp(Math.round(it.funded / it.price * 100), 0, 100) : 0;
+  const left = it => Math.max(0, it.price - it.funded);
+  const validUrl = u => /^https?:\/\/\S+$/i.test(u || '');
+
+  function toast(msg){
+    const t = document.createElement('div'); t.className = 'toast'; t.textContent = msg; t.setAttribute('role','status');
+    document.body.appendChild(t); setTimeout(() => t.remove(), 2600);
+  }
+
+  function cagnotteBtn(label, cls='btn'){
+    return validUrl(S.cagnotteUrl)
+      ? `<a class="${cls}" href="${esc(S.cagnotteUrl)}" target="_blank" rel="noopener">${label} ↗</a>`
+      : `<span class="${cls}" aria-disabled="true" title="Le lien de la cagnotte n'est pas encore renseigné">${label}</span>`;
+  }
+
+  function render(){
+    document.title = 'Liste de naissance · ' + S.title;
+    const total = S.items.reduce((a,i)=>a+i.price,0);
+    const funded = S.items.reduce((a,i)=>a+Math.min(i.funded,i.price),0);
+    const tp = total ? Math.round(funded/total*100) : 0;
+    const cats = ['Tout', ...new Set(S.items.map(i=>i.cat).filter(Boolean))];
+    if (!cats.includes(filter)) filter = 'Tout';
+    const shown = S.items.filter(i => filter==='Tout' || i.cat===filter)
+      .sort((a,b) => (left(a)===0) - (left(b)===0));
+
+    app.innerHTML = `
+      <header class="hero">
+        <div>
+          <div class="eyebrow">Liste de naissance participative</div>
+          <h1>La liste de <em>${esc(S.title)}</em></h1>
+          <p class="msg">${esc(S.message)}</p>
+          <div class="facts">
+            ${S.parents ? `<span>Parents · <b>${esc(S.parents)}</b></span>` : ''}
+            ${S.due ? `<span>Naissance prévue · <b>${esc(S.due)}</b></span>` : ''}
+          </div>
+        </div>
+        <aside class="summary" aria-label="Avancement de la liste">
+          <div class="eyebrow">Déjà réuni</div>
+          <div class="big num">${eur(funded)} <span style="font-size:1rem;color:var(--muted);font-family:var(--sans)">sur ${eur(total)}</span></div>
+          <div class="bar" role="progressbar" aria-valuenow="${tp}" aria-valuemin="0" aria-valuemax="100"><i style="width:${tp}%"></i></div>
+          <div class="meta"><span class="num">${tp} %</span><span>${S.items.filter(i=>left(i)===0).length} / ${S.items.length} cadeaux offerts</span></div>
+          ${cagnotteBtn('Participer librement à la cagnotte')}
+        </aside>
+      </header>
+
+      <section class="how" aria-label="Comment participer">
+        <div>Choisissez un cadeau et le montant que vous souhaitez offrir, même une petite part.</div>
+        <div>Copiez le petit récapitulatif et collez-le en message sur la cagnotte.</div>
+        <div>Versez votre participation sur la cagnotte. Les parents mettent la liste à jour dès réception.</div>
+      </section>
+
+      <section style="display:flex;flex-direction:column;gap:16px">
+        <div class="toolbar">
+          <div class="chips" role="group" aria-label="Filtrer par catégorie">
+            ${cats.map(c=>`<button class="chip" data-cat="${esc(c)}" aria-pressed="${c===filter}">${esc(c)}</button>`).join('')}
+          </div>
+          ${canEdit ? `<button class="btn ghost small" id="edit">Modifier la liste</button>` : ''}
+        </div>
+        <div class="grid">
+          ${shown.map(it => {
+            const p = pct(it), l = left(it), done = l===0;
+            return `<article class="card ${done?'is-done':''}">
+              <div class="top"><span class="cat">${esc(it.cat)}</span><span class="price num">${eur(it.price)}</span></div>
+              <h3>${esc(it.name)}</h3>
+              ${it.desc ? `<p>${esc(it.desc)}</p>` : ''}
+              <div class="bar" role="progressbar" aria-label="Financé à ${p} %" aria-valuenow="${p}" aria-valuemin="0" aria-valuemax="100"><i style="width:${p}%"></i></div>
+              <div class="meta num"><span>${eur(Math.min(it.funded,it.price))} réunis</span><span>${done ? '100 %' : 'reste ' + eur(l)}</span></div>
+              <div class="actions">
+                ${done ? `<span class="done">Offert, merci !</span>` : `<button class="btn small" data-give="${esc(it.id)}">Participer</button>`}
+                <span class="note num">${p} %</span>
+              </div>
+            </article>`;
+          }).join('')}
+        </div>
+      </section>
+
+      <footer>
+        Les montants sont mis à jour à la main par les parents après réception sur la cagnotte.
+        ${canEdit && S.example ? `<br><strong>Mode parents :</strong> la liste contient des exemples. Cliquez sur « Modifier la liste » pour mettre vos cadeaux et le lien de votre cagnotte.` : ''}
+      </footer>`;
+
+    app.querySelectorAll('[data-cat]').forEach(b => b.onclick = () => { filter = b.dataset.cat; render(); });
+    app.querySelectorAll('[data-give]').forEach(b => b.onclick = () => openGive(b.dataset.give));
+    const e = app.querySelector('#edit'); if (e) e.onclick = openEditor;
+  }
+
+  function overlay(inner, cls=''){
+    const o = document.createElement('div');
+    o.className = 'overlay';
+    o.innerHTML = `<div class="sheet ${cls}" role="dialog" aria-modal="true">${inner}</div>`;
+    const close = () => { o.remove(); document.removeEventListener('keydown', onKey); };
+    const onKey = ev => { if (ev.key === 'Escape') close(); };
+    document.addEventListener('keydown', onKey);
+    o.addEventListener('click', ev => { if (ev.target === o) close(); });
+    document.body.appendChild(o);
+    o.querySelectorAll('[data-close]').forEach(b => b.onclick = close);
+    return {o, close};
+  }
+
+  /* ---------- Guest: participate ---------- */
+  function openGive(id){
+    const it = S.items.find(i=>i.id===id); if (!it) return;
+    const l = left(it);
+    const presets = [10,20,50,100].filter(v => v < l);
+    let amount = presets[1] ?? presets[0] ?? l;
+    const {o} = overlay(`
+      <div style="display:flex;align-items:flex-start;gap:12px">
+        <div><div class="eyebrow">Participer à</div><h2>${esc(it.name)}</h2></div>
+        <button class="x" data-close aria-label="Fermer">×</button>
+      </div>
+      <p class="note num">Prix ${eur(it.price)} · déjà ${eur(Math.min(it.funded,it.price))} réunis · reste ${eur(l)}</p>
+      <div>
+        <div class="eyebrow" style="margin-bottom:8px">Votre participation</div>
+        <div class="row" id="presets">
+          ${presets.map(v=>`<button class="amt num" data-v="${v}">${eur(v)}</button>`).join('')}
+          <button class="amt num" data-v="${l}">Le reste · ${eur(l)}</button>
+        </div>
+      </div>
+      <label for="g-amt">Ou un autre montant (€)
+        <input id="g-amt" type="number" inputmode="decimal" min="1" step="1" value="${amount}">
+      </label>
+      <label for="g-name">Votre prénom et nom
+        <input id="g-name" type="text" autocomplete="name" placeholder="Ex. Tante Sophie">
+      </label>
+      <label for="g-msg">Un petit mot (facultatif)
+        <textarea id="g-msg" placeholder="Un message pour les parents"></textarea>
+      </label>
+      <div>
+        <div class="eyebrow" style="margin-bottom:8px">À coller en message sur la cagnotte</div>
+        <div class="recap" id="g-recap"></div>
+      </div>
+      <p class="err" id="g-err" hidden></p>
+      <div class="row" style="justify-content:flex-end">
+        <button class="btn ghost" id="g-copy">Copier le récapitulatif</button>
+        ${cagnotteBtn('Aller sur la cagnotte')}
+      </div>
+      <p class="note">La cagnotte s'ouvre dans un nouvel onglet. Pensez à y indiquer le cadeau choisi pour que les parents puissent mettre la liste à jour.</p>
+    `);
+    const $ = s => o.querySelector(s);
+    const amtIn = $('#g-amt');
+    const sync = () => {
+      amount = parseFloat(amtIn.value) || 0;
+      o.querySelectorAll('.amt').forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.v === amount)));
+      const name = $('#g-name').value.trim(), msg = $('#g-msg').value.trim();
+      $('#g-recap').textContent = `Participation pour : ${it.name}\nMontant : ${amount > 0 ? eur(amount) : '—'}\nDe la part de : ${name || '—'}${msg ? `\nMot : ${msg}` : ''}`;
+      const err = $('#g-err');
+      if (amount > l) { err.hidden = false; err.textContent = `Le montant dépasse ce qu'il reste à financer (${eur(l)}). Le surplus pourra servir à un autre cadeau.`; }
+      else err.hidden = true;
+    };
+    o.querySelectorAll('.amt').forEach(b => b.onclick = () => { amtIn.value = b.dataset.v; sync(); });
+    ['#g-amt','#g-name','#g-msg'].forEach(s => $(s).addEventListener('input', sync));
+    $('#g-copy').onclick = () => {
+      const txt = $('#g-recap').textContent;
+      const fallback = () => { const r = document.createRange(); r.selectNodeContents($('#g-recap')); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); toast('Texte sélectionné : copiez-le avec Ctrl/Cmd + C'); };
+      try {
+        navigator.clipboard.writeText(txt).then(() => toast('Récapitulatif copié'), fallback);
+      } catch(e){ fallback(); }
+    };
+    sync();
+    setTimeout(() => $('#g-name').focus(), 50);
+  }
+
+  /* ---------- Parents: edit & save ---------- */
+  function openEditor(){
+    const draft = JSON.parse(JSON.stringify(S));
+    const itemHtml = (it, i) => `
+      <div class="editor-item" data-i="${i}">
+        <label class="full" for="e-name-${i}">Cadeau<input id="e-name-${i}" data-f="name" value="${esc(it.name)}"></label>
+        <label for="e-cat-${i}">Catégorie<input id="e-cat-${i}" data-f="cat" value="${esc(it.cat)}" placeholder="Balade, Sommeil…"></label>
+        <label for="e-price-${i}">Prix (€)<input id="e-price-${i}" data-f="price" type="number" min="0" step="1" value="${it.price}"></label>
+        <label class="full" for="e-desc-${i}">Description<input id="e-desc-${i}" data-f="desc" value="${esc(it.desc)}"></label>
+        <label for="e-funded-${i}">Déjà reçu (€)<input id="e-funded-${i}" data-f="funded" type="number" min="0" step="1" value="${it.funded}"></label>
+        <div style="display:flex;align-items:flex-end;justify-content:flex-end"><button class="btn ghost small" data-del="${i}">Retirer</button></div>
+      </div>`;
+    const {o, close} = overlay(`
+      <div style="display:flex;align-items:flex-start;gap:12px">
+        <div><div class="eyebrow">Mode parents</div><h2>Modifier la liste</h2></div>
+        <button class="x" data-close aria-label="Fermer">×</button>
+      </div>
+      <label for="e-title">Nom du bébé (affiché en titre)<input id="e-title" value="${esc(draft.title)}"></label>
+      <label for="e-parents">Parents<input id="e-parents" value="${esc(draft.parents)}"></label>
+      <label for="e-due">Naissance prévue<input id="e-due" value="${esc(draft.due)}" placeholder="ex. décembre 2026"></label>
+      <label for="e-msg">Message d'accueil<textarea id="e-msg">${esc(draft.message)}</textarea></label>
+      <label for="e-url">Lien de la cagnotte (Leetchi, Lydia, PayPal…)<input id="e-url" type="url" value="${esc(draft.cagnotteUrl)}" placeholder="https://…"></label>
+      <div class="eyebrow">Cadeaux</div>
+      <div class="editor-list" id="e-list">${draft.items.map(itemHtml).join('')}</div>
+      <button class="btn ghost small" id="e-add" style="align-self:flex-start">+ Ajouter un cadeau</button>
+      <p class="err" id="e-err" hidden></p>
+      <div class="sticky">
+        <button class="btn ghost" data-close>Annuler</button>
+        <button class="btn" id="e-save">Enregistrer et publier</button>
+      </div>
+    `, 'wide');
+    const $ = s => o.querySelector(s);
+    const collect = () => {
+      draft.title = $('#e-title').value.trim() || 'Bébé';
+      draft.parents = $('#e-parents').value.trim();
+      draft.due = $('#e-due').value.trim();
+      draft.message = $('#e-msg').value.trim();
+      draft.cagnotteUrl = $('#e-url').value.trim();
+      o.querySelectorAll('.editor-item').forEach(row => {
+        const it = draft.items[+row.dataset.i];
+        row.querySelectorAll('[data-f]').forEach(inp => {
+          const f = inp.dataset.f;
+          it[f] = (f==='price'||f==='funded') ? Math.max(0, parseFloat(inp.value)||0) : inp.value.trim();
+        });
+      });
+    };
+    const redrawList = () => {
+      $('#e-list').innerHTML = draft.items.map(itemHtml).join('');
+      o.querySelectorAll('[data-del]').forEach(b => b.onclick = () => { collect(); draft.items.splice(+b.dataset.del,1); redrawList(); });
+    };
+    redrawList();
+    $('#e-add').onclick = () => {
+      collect();
+      draft.items.push({id:'i'+Date.now().toString(36), name:'Nouveau cadeau', cat:'', desc:'', price:50, funded:0});
+      redrawList();
+      const last = o.querySelector('.editor-item:last-child input'); if (last) { last.focus(); last.select(); }
+    };
+    $('#e-save').onclick = async () => {
+      collect();
+      const err = $('#e-err');
+      if (draft.cagnotteUrl && !validUrl(draft.cagnotteUrl)) { err.hidden=false; err.textContent='Le lien de la cagnotte doit commencer par https://'; return; }
+      draft.items = draft.items.filter(i => i.name);
+      draft.example = false;
+      const btn = $('#e-save'); btn.disabled = true; btn.textContent = 'Publication…';
+      try {
+        if (artifactApi) {
+          await artifactApi.publish(buildDoc(draft));
+          S = draft; close(); render(); toast('Liste publiée');
+        } else {
+          const blob = new Blob([buildDoc(draft)], {type:'text/html'});
+          const a = document.createElement('a');
+          a.href = URL.createObjectURL(blob); a.download = 'liste-naissance.html';
+          document.body.appendChild(a); a.click(); a.remove();
+          S = draft; close(); render();
+          toast('Nouveau fichier téléchargé : remplacez l’ancien sur votre hébergement');
+        }
+      } catch(e){
+        btn.disabled = false; btn.textContent = 'Enregistrer et publier';
+        err.hidden = false;
+        err.textContent = e && e.code === 'conflict'
+          ? 'La page vient d’être modifiée ailleurs. Elle va se recharger, refaites votre modification.'
+          : 'Impossible d’enregistrer : seuls les parents (propriétaires de la page) peuvent modifier la liste.';
+      }
+    };
+  }
+
+  function buildDoc(state){
+    const json = JSON.stringify(state).replace(/</g,'\\u003c');
+    const body = PRISTINE.map(h => h === null
+      ? `<script data-own type="application/json" id="state">${json}<\/script>` : h).join('\n');
+    return `<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>${body}</body></html>`;
+  }
+
+  canEdit = location.hash === '#parents';
+  render();
+  window.addEventListener('hashchange', () => { canEdit = location.hash === '#parents'; render(); });
+
+  if (window.claude && claude.use) {
+    claude.use('artifact').then(a => { artifactApi = a; }).catch(()=>{});
+    claude.use('user').then(async u => {
+      if (!u) return;
+      const ok = (await u.canEdit().catch(()=>false)) || (await u.isOwner().catch(()=>false));
+      if (ok !== canEdit) { canEdit = ok; render(); }
+    }).catch(()=>{});
+  }
+})();
+</script>
+
+</body>
+</html>
